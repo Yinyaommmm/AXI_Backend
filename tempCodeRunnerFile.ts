@@ -1,1 +1,1 @@
-let a = 5;
+new ivm.Reference(new_bulletList)

@@ -70,18 +70,19 @@ export function SetGameEnv(global: ivm.Reference) {
           curUser === "red" ? User.red : User.blue,
           calcDirection(dir, speed)
         );
+        // 子弹瞬间移动三格
         if (dir === "X") {
           bullet.x += speed;
         } else {
           bullet.y += speed;
-        } // 子弹瞬间移动三格
-        ref_bulletList.deref().push(bullet);
+        }
+        global.getSync("bulletList").deref().push(bullet);
       });
     }
     return cache.get(key) as Function;
   }
 
-  global.setSync("round", 0);
+  global.setSync("round", 1);
   global.setSync("blueX", Config.Map_Width - 1);
   global.setSync("blueY", Config.Map_Width - 1);
   global.setSync("redX", 0);
@@ -91,7 +92,7 @@ export function SetGameEnv(global: ivm.Reference) {
   global.setSync("MyX", getPos("My", "X"));
   global.setSync("MyY", getPos("My", "Y"));
   global.setSync("EnemyX", getPos("Enemy", "X"));
-  global.setSync("EnemyY", getPos("Enemy", "X"));
+  global.setSync("EnemyY", getPos("Enemy", "Y"));
   global.setSync("MoveUp", move("Y", Config.User_Speed));
   global.setSync("MoveDown", move("Y", -Config.User_Speed));
   global.setSync("MoveLeft", move("X", -Config.User_Speed));
@@ -101,4 +102,15 @@ export function SetGameEnv(global: ivm.Reference) {
   global.setSync("FireLeft", fire("X", -Config.Bullet_Speed));
   global.setSync("FireRight", fire("X", Config.Bullet_Speed));
   global.setSync("GetRound", () => global.getSync("round"));
+}
+
+export function nextUser(global: ivm.Reference) {
+  if (global.getSync("curUser") === "red") {
+    global.setSync("curUser", "blue");
+  } else {
+    global.setSync("curUser", "red");
+  }
+}
+export function nextRound(global: ivm.Reference) {
+  global.setSync("round", global.getSync("round") + 1);
 }

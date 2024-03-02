@@ -19,7 +19,7 @@ export enum BlockObj {
   redBullet,
   blueBullet,
 }
-export enum BulletDirection {
+export enum Direction {
   None,
   Up,
   Down,
@@ -36,7 +36,7 @@ export enum User {
 export class MapBlock {
   color = Color.empty;
   blockObj = BlockObj.none;
-  bd = BulletDirection.None;
+  bd = Direction.None;
 
   setColor(c: Color) {
     this.color = c;
@@ -46,7 +46,7 @@ export class MapBlock {
     this.blockObj = bo;
     return this;
   }
-  setBd(d: BulletDirection) {
+  setBd(d: Direction) {
     this.bd = d;
     return this;
   }
@@ -68,20 +68,20 @@ export class Bullet {
     public x: number = -1,
     public y: number = -1,
     public from: User = User.None,
-    public direction: BulletDirection = BulletDirection.None
+    public direction: Direction = Direction.None
   ) {}
   move() {
     switch (this.direction) {
-      case BulletDirection.Down:
+      case Direction.Down:
         this.y -= Config.Bullet_Speed;
         break;
-      case BulletDirection.Up:
+      case Direction.Up:
         this.y += Config.Bullet_Speed;
         break;
-      case BulletDirection.Left:
+      case Direction.Left:
         this.x -= Config.Bullet_Speed;
         break;
-      case BulletDirection.Right:
+      case Direction.Right:
         this.x += Config.Bullet_Speed;
         break;
     }
@@ -90,9 +90,9 @@ export class Bullet {
 
 export function calcDirection(dir: "X" | "Y", speed: number) {
   if (dir === "X") {
-    return speed > 0 ? BulletDirection.Right : BulletDirection.Left;
+    return speed > 0 ? Direction.Right : Direction.Left;
   } else if (dir === "Y") {
-    return speed > 0 ? BulletDirection.Up : BulletDirection.Down;
+    return speed > 0 ? Direction.Up : Direction.Down;
   }
-  return BulletDirection.None;
+  return Direction.None;
 }
